@@ -1,0 +1,39 @@
+[project]
+name = 'Decentralized-Smart-City-Building-Management'
+description = ''
+authors = []
+telemetry = true
+cache_dir = './.cache'
+requirements = []
+[contracts.building-verification]
+path = 'contracts/building-verification.clar'
+clarity_version = 2
+epoch = 2.5
+
+[contracts.emergency-response]
+path = 'contracts/emergency-response.clar'
+clarity_version = 2
+epoch = 2.5
+
+[contracts.energy-management]
+path = 'contracts/energy-management.clar'
+clarity_version = 2
+epoch = 2.5
+
+[contracts.maintenance-scheduling]
+path = 'contracts/maintenance-scheduling.clar'
+clarity_version = 2
+epoch = 2.5
+
+[contracts.occupancy-tracking]
+path = 'contracts/occupancy-tracking.clar'
+clarity_version = 2
+epoch = 2.5
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
