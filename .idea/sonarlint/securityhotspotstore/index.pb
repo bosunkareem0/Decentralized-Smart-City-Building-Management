@@ -9,3 +9,5 @@ P
  contracts/energy-management.clar,0/d/0df19b5a5765673eca7c6f13a89c30d4555976ea
 U
 %contracts/maintenance-scheduling.clar,f/7/f75564e007197f104115c4551443027923af5a64
+Q
+!contracts/occupancy-tracking.clar,5/c/5cb06d7082d06d2518749c15641abb8edb08520e
