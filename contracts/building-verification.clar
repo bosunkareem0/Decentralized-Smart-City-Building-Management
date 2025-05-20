@@ -1,30 +1,83 @@
+;; building-verification.clar
+;; This contract validates urban structures
 
-;; title: building-verification
-;; version:
-;; summary:
-;; description:
+(define-data-var admin principal tx-sender)
 
-;; traits
-;;
+;; Map to store verified buildings
+(define-map verified-buildings
+  { building-id: (string-ascii 36) }
+  {
+    owner: principal,
+    status: (string-ascii 20),
+    verification-date: uint,
+    location: (string-ascii 100)
+  }
+)
 
-;; token definitions
-;;
+;; Public function to register a new building
+(define-public (register-building
+                (building-id (string-ascii 36))
+                (location (string-ascii 100)))
+  (begin
+    (asserts! (is-eq tx-sender (var-get admin)) (err u1))
+    (ok (map-insert verified-buildings
+      { building-id: building-id }
+      {
+        owner: tx-sender,
+        status: "pending",
+        verification-date: block-height,
+        location: location
+      }
+    ))
+  )
+)
 
-;; constants
-;;
+;; Public function to verify a building
+(define-public (verify-building
+                (building-id (string-ascii 36))
+                (new-status (string-ascii 20)))
+  (begin
+    (asserts! (is-eq tx-sender (var-get admin)) (err u1))
+    (match (map-get? verified-buildings { building-id: building-id })
+      building (ok (map-set verified-buildings
+                  { building-id: building-id }
+                  (merge building {
+                    status: new-status,
+                    verification-date: block-height
+                  })
+                ))
+      (err u2)
+    )
+  )
+)
 
-;; data vars
-;;
+;; Read-only function to get building details
+(define-read-only (get-building-details (building-id (string-ascii 36)))
+  (map-get? verified-buildings { building-id: building-id })
+)
 
-;; data maps
-;;
+;; Function to transfer building ownership
+(define-public (transfer-building-ownership
+                (building-id (string-ascii 36))
+                (new-owner principal))
+  (begin
+    (match (map-get? verified-buildings { building-id: building-id })
+      building (begin
+        (asserts! (is-eq tx-sender (get owner building)) (err u3))
+        (ok (map-set verified-buildings
+            { building-id: building-id }
+            (merge building { owner: new-owner })
+          ))
+      )
+      (err u2)
+    )
+  )
+)
 
-;; public functions
-;;
-
-;; read only functions
-;;
-
-;; private functions
-;;
-
+;; Function to change admin
+(define-public (set-admin (new-admin principal))
+  (begin
+    (asserts! (is-eq tx-sender (var-get admin)) (err u1))
+    (ok (var-set admin new-admin))
+  )
+)
