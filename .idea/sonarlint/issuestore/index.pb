@@ -7,3 +7,5 @@ Q
 !contracts/emergency-response.clar,2/1/2177f834546b9c6184c70d9e22bf4b088097b315
 P
  contracts/energy-management.clar,0/d/0df19b5a5765673eca7c6f13a89c30d4555976ea
+U
+%contracts/maintenance-scheduling.clar,f/7/f75564e007197f104115c4551443027923af5a64
